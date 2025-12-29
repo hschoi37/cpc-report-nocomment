@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다중디앤핑 CPC리포트 생성기</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- 파일 업로드 섹션 -->
+    <div id="upload-section" class="section">
+        <div class="upload-container">
+            <h1>🏪 다중디앤핑 CPC리포트 생성기</h1>
+            <p class="subtitle">Excel 파일을 업로드하여 자동으로 리포트를 생성하세요</p>
+
+            <div class="upload-area" id="upload-area">
+                <div class="upload-icon">📁</div>
+                <p class="upload-text">Excel 파일을 드래그하거나 클릭하여 업로드</p>
+                <p class="upload-hint">지원 형식: .xlsx, .xls, .csv</p>
+                <input type="file" id="file-input" accept=".xlsx,.xls,.csv" hidden>
+            </div>
+
+            <div id="upload-status" class="upload-status hidden"></div>
+        </div>
+    </div>
+
+    <!-- 입력 대시보드 섹션 -->
+    <div id="input-section" class="section hidden">
+        <div class="dashboard-container">
+            <h2>📊 예산 및 운영 정보 입력</h2>
+            <p class="section-desc">리포트에 반영될 예산 정보를 입력하세요</p>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>1일 한도 (평일) <span class="unit">CNY</span></label>
+                    <input type="number" id="weekday-limit" value="120" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label>1일 한도 (휴일) <span class="unit">CNY</span></label>
+                    <input type="number" id="weekend-limit" value="180" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label>총 충전금 <span class="unit">CNY</span></label>
+                    <input type="number" id="total-budget" value="3000" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label>현재 잔액 <span class="unit">CNY</span></label>
+                    <input type="number" id="current-balance" value="1105" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label>리포트 기준일</label>
+                    <input type="date" id="report-date" readonly>
+                </div>
+
+                <div class="input-group">
+                    <label>최종 충전일</label>
+                    <input type="date" id="last-charge-date">
+                </div>
+
+                <div class="input-group highlight-box">
+                    <label>소진 예상일</label>
+                    <div class="calculated-value" id="estimated-date">계산 중...</div>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="generate-report-btn">리포트 생성하기</button>
+        </div>
+    </div>
+
+    <!-- 리포트 섹션 -->
+    <div id="report-section" class="section hidden">
+        <div class="report-controls">
+            <button class="btn-primary" id="new-report-btn" style="background: #3498db; margin-right: auto;">🔄 새 리포트
+                작성</button>
+            <button class="btn-secondary" id="edit-inputs-btn">입력 정보 수정</button>
+            <button class="btn-success" id="save-png-btn">PNG로 저장</button>
+            <button class="btn-success" id="save-pdf-btn">PDF로 저장</button>
+        </div>
+
+        <div class="container" id="report-container">
+            <div class="header">
+                <h1>🏪 <span id="store-name">수라게장1229</span></h1>
+                <p><span id="report-month">2025년 12월</span> CPC 운영리포트</p>
+            </div>
+
+            <div class="content">
+                <!-- 요약 정보 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📋</span> 운영 기간
+                    </div>
+                    <div class="summary-box">
+                        <p><strong>CPC 운영기간</strong>: <span id="date-range">2025.12.01 ~ 2025.12.28</span> (<span
+                                id="days-count">28</span>일간)</p>
+                        <p><strong>최종 충전일</strong>: <span id="display-last-charge-date">-</span></p>
+                        <p><strong>예상 충전일</strong>: <span id="next-charge-date">2025년 1월 10일 예상</span></p>
+                    </div>
+                </div>
+
+                <!-- 핵심 성과 지표 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">🎯</span> 핵심 성과 지표
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">총 소진 비용</div>
+                            <div class="metric-value" id="total-cost">0 CNY</div>
+                            <div class="metric-sub">일평균 <span id="avg-daily-cost">0</span> CNY</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">총 노출수</div>
+                            <div class="metric-value" id="total-impressions">0회</div>
+                            <div class="metric-sub">일평균 <span id="avg-daily-impressions">0</span>회</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">총 클릭수</div>
+                            <div class="metric-value" id="total-clicks">0회</div>
+                            <div class="metric-sub">일평균 <span id="avg-daily-clicks">0</span>회</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">평균 클릭률</div>
+                            <div class="metric-value" id="avg-ctr">0%</div>
+                            <div class="metric-sub">업계 평균 대비 양호 ✓</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 예산 운영 현황 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">💰</span> 예산 운영 현황
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>구분</th>
+                                    <th>1일 한도</th>
+                                    <th>총 충전금</th>
+                                    <th>총 소진액</th>
+                                    <th>현재 잔액</th>
+                                    <th>소진 예상일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>평일 / 휴일</strong></td>
+                                    <td id="budget-limits">120 / 180 CNY</td>
+                                    <td id="budget-total">3,000 CNY</td>
+                                    <td id="budget-spent">0 CNY</td>
+                                    <td id="budget-balance" style="color: #27ae60; font-weight: 700;">0 CNY</td>
+                                    <td id="budget-estimated-date">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="insight-box editable" contenteditable="true">
+                        <h4>💡 예산 분석</h4>
+                        <p>✓ 현재 예산 상황이 <span class="highlight">양호</span>합니다. 예상 소진일이 충분한 여유가 있습니다.</p>
+                        <p>✓ 평균 일일 소진액이 배정된 한도를 효율적으로 활용하고 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 주간별 성과 분석 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📊</span> 주간별 성과 분석
+                    </div>
+                    <div class="weekly-grid" id="weekly-grid">
+                        <!-- 동적으로 생성됨 -->
+                    </div>
+
+                    <div class="insight-box editable" contenteditable="true">
+                        <h4>💡 주간 분석 및 발견</h4>
+                        <p>✓ <span class="highlight">클릭률이 지속적으로 개선</span>되고 있습니다.</p>
+                        <p>✓ 광고 최적화가 효과를 발휘하고 있는 증거입니다.</p>
+                    </div>
+                </div>
+
+                <!-- 차트: 일별 노출수 추이 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📈</span> 일별 노출수 추이
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">일별 노출수 변동 추이</div>
+                        <canvas id="impressionsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 차트: 일별 클릭수 추이 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📈</span> 일별 클릭수 추이
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">일별 클릭수 변동 추이</div>
+                        <canvas id="clicksChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 차트: 클릭률 추이 -->
+                <div class="section">
+                    <div class="chart-container">
+                        <div class="chart-title">일별 클릭률 변화</div>
+                        <canvas id="ctrChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 상세 데이터 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📋</span> 일별 상세 데이터
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>소진비용</th>
+                                    <th>노출수</th>
+                                    <th>클릭수</th>
+                                    <th>클릭률</th>
+                                    <th>클릭당 평균비용</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daily-table-body">
+                                <!-- 동적으로 생성됨 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 푸터 -->
+                <div class="footer-section">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h2 style="color: #667eea; margin-bottom: 15px;">📞 문의 및 지원</h2>
+                        <p style="color: #666; font-size: 1.05em; line-height: 1.8;">
+                            리포트에 대한 질문이나 추가적인 최적화 상담이 필요하신 경우<br>
+                            <strong>언제든지 연락주세요!</strong> 😊
+                        </p>
+                    </div>
+
+                    <div class="footer-info">
+                        <p style="margin-top: 15px; font-weight: 600; color: #667eea;">
+                            💪 <strong>함께 성장하는 파트너십!</strong><br>
+                            에프케이(주)가 더 나은 성과를 위해 지속적으로 노력해 나가겠습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

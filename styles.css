@@ -1,0 +1,537 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 업로드 섹션 */
+.upload-container {
+    max-width: 800px;
+    margin: 100px auto;
+    background: white;
+    border-radius: 20px;
+    padding: 60px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.upload-container h1 {
+    font-size: 2.5em;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 40px;
+}
+
+.upload-area {
+    border: 3px dashed #667eea;
+    border-radius: 15px;
+    padding: 60px 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 20%);
+}
+
+.upload-area:hover {
+    border-color: #764ba2;
+    background: linear-gradient(135deg, #fef5e7 0%, #fde8d0 20%);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.upload-area.dragging {
+    border-color: #27ae60;
+    background: linear-gradient(135deg, #e8f4f8 0%, #d4e8f0 20%);
+}
+
+.upload-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.upload-text {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.upload-hint {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.upload-status {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.upload-status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.upload-status.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* 입력 대시보드 */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-container h2 {
+    font-size: 2em;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.section-desc {
+    color: #666;
+    margin-bottom: 40px;
+    font-size: 1.05em;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+}
+
+.unit {
+    color: #999;
+    font-weight: 400;
+    font-size: 0.9em;
+}
+
+.input-group input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fde8d0 100%);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #f39c12;
+}
+
+.calculated-value {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #f39c12;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+/* 리포트 컨트롤 */
+.report-controls {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn-secondary, .btn-success {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+/* 리포트 컨테이너 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 50px 40px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    font-size: 1.1em;
+    opacity: 0.95;
+    letter-spacing: 0.5px;
+}
+
+.content {
+    padding: 50px 40px;
+}
+
+.section-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #667eea;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    font-size: 1.3em;
+}
+
+/* 요약 정보 */
+.summary-box {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border-left: 5px solid #667eea;
+}
+
+.summary-box p {
+    font-size: 1.1em;
+    color: #333;
+    margin: 10px 0;
+}
+
+/* 성과 지표 */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.metric-card {
+    background: white;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+}
+
+.metric-label {
+    color: #999;
+    font-size: 0.8em;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.metric-value {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 4px;
+}
+
+.metric-sub {
+    font-size: 0.75em;
+    color: #666;
+}
+
+/* 테이블 */
+.table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+thead {
+    background: #f8f9fa;
+}
+
+th {
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    color: #333;
+    border-bottom: 2px solid #667eea;
+    font-size: 0.95em;
+}
+
+td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    color: #555;
+}
+
+tbody tr:hover {
+    background: #f8f9fa;
+}
+
+tbody tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+/* 차트 컨테이너 */
+.chart-container {
+    position: relative;
+    height: 400px;
+    margin-bottom: 50px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #f0f0f0;
+}
+
+.chart-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 인사이트 박스 */
+.insight-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fde8d0 100%);
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid #f39c12;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.insight-box h4 {
+    color: #d68910;
+    margin-bottom: 10px;
+    font-size: 1.05em;
+}
+
+.insight-box p {
+    color: #666;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+.insight-box.editable {
+    cursor: text;
+    position: relative;
+}
+
+.insight-box.editable:hover {
+    background: linear-gradient(135deg, #fffacd 0%, #fff4a3 100%);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.2);
+}
+
+.insight-box.editable:hover::after {
+    content: "✏️";
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.2em;
+}
+
+/* 주간 분석 */
+.weekly-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.weekly-card {
+    background: white;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 15px;
+    border-top: 4px solid #667eea;
+}
+
+.weekly-card.week2 {
+    border-top-color: #764ba2;
+}
+
+.weekly-card.week3 {
+    border-top-color: #f39c12;
+}
+
+.weekly-card.week4 {
+    border-top-color: #e74c3c;
+}
+
+.weekly-label {
+    font-size: 0.85em;
+    color: #999;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.weekly-metric {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding: 7px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.85em;
+}
+
+.weekly-metric:last-child {
+    border-bottom: none;
+}
+
+.weekly-metric-label {
+    color: #666;
+}
+
+.weekly-metric-value {
+    font-weight: 700;
+    color: #333;
+}
+
+/* 하단 영역 */
+.footer-section {
+    background: #f8f9fa;
+    padding: 40px;
+    border-radius: 15px;
+    margin-top: 30px;
+}
+
+.footer-info {
+    text-align: center;
+    color: #999;
+    font-size: 0.9em;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.highlight {
+    background: #fffacd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .weekly-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .report-controls {
+        flex-direction: column;
+    }
+}
