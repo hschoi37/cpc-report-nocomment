@@ -147,113 +147,116 @@
                         </table>
                     </div>
                 </div>
-            </div>
+                <!-- End of Budget Section -->
 
-            <!-- 핵심 성과 지표 -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="icon">🎯</span> 핵심 성과 지표
-                </div>
-                <div class="metrics-grid">
-                    <div class="metric-card glass">
-                        <div class="metric-label">총 소진 비용</div>
-                        <div class="metric-value" id="total-cost">0 CNY</div>
-                        <div class="metric-sub">일평균 <span id="avg-daily-cost">0</span> CNY</div>
+
+                <!-- 핵심 성과 지표 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">🎯</span> 핵심 성과 지표
                     </div>
-                    <div class="metric-card glass">
-                        <div class="metric-label">총 노출수</div>
-                        <div class="metric-value" id="total-impressions">0회</div>
-                        <div class="metric-sub">일평균 <span id="avg-daily-impressions">0</span>회</div>
+                    <div class="metrics-grid">
+                        <div class="metric-card glass">
+                            <div class="metric-label">총 소진 비용</div>
+                            <div class="metric-value" id="total-cost">0 CNY</div>
+                            <div class="metric-sub">일평균 <span id="avg-daily-cost">0</span> CNY</div>
+                        </div>
+                        <div class="metric-card glass">
+                            <div class="metric-label">총 노출수</div>
+                            <div class="metric-value" id="total-impressions">0회</div>
+                            <div class="metric-sub">일평균 <span id="avg-daily-impressions">0</span>회</div>
+                        </div>
+                        <div class="metric-card glass">
+                            <div class="metric-label">총 클릭수</div>
+                            <div class="metric-value" id="total-clicks">0회</div>
+                            <div class="metric-sub">일평균 <span id="avg-daily-clicks">0</span>회</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">평균 클릭률</div>
+                            <div class="metric-value" id="avg-ctr">0%</div>
+                            <div class="metric-sub">업계 평균 대비 양호 ✓</div>
+                        </div>
                     </div>
-                    <div class="metric-card glass">
-                        <div class="metric-label">총 클릭수</div>
-                        <div class="metric-value" id="total-clicks">0회</div>
-                        <div class="metric-sub">일평균 <span id="avg-daily-clicks">0</span>회</div>
+                </div>
+
+
+
+
+                <!-- 차트: 일별 노출수 추이 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📈</span> 일별 노출수 추이
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-label">평균 클릭률</div>
-                        <div class="metric-value" id="avg-ctr">0%</div>
-                        <div class="metric-sub">업계 평균 대비 양호 ✓</div>
+                    <div class="chart-container">
+                        <div class="chart-title">일별 노출수 변동 추이</div>
+                        <canvas id="impressionsChart"></canvas>
                     </div>
                 </div>
+
+                <!-- 차트: 일별 클릭수 추이 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📈</span> 일별 클릭수 추이
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">일별 클릭수 변동 추이</div>
+                        <canvas id="clicksChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 차트: 클릭률 추이 -->
+                <div class="section">
+                    <div class="chart-container">
+                        <div class="chart-title">일별 클릭률 변화</div>
+                        <canvas id="ctrChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 상세 데이터 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📋</span> 일별 상세 데이터
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>소진비용</th>
+                                    <th>노출수</th>
+                                    <th>클릭수</th>
+                                    <th>클릭률</th>
+                                    <th>클릭당 평균비용</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daily-table-body">
+                                <!-- 동적으로 생성됨 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- End of Table Wrapper -->
+            </div> <!-- End of Section -->
+        </div> <!-- End of Content -->
+
+
+        <!-- 푸터 -->
+        <div class="footer-section">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: #667eea; margin-bottom: 15px;">📞 문의 및 지원</h2>
+                <p style="color: #666; font-size: 1.05em; line-height: 1.8;">
+                    리포트에 대한 질문이나 추가적인 최적화 상담이 필요하신 경우<br>
+                    <strong>언제든지 연락주세요!</strong> 😊
+                </p>
             </div>
 
-
-
-
-            <!-- 차트: 일별 노출수 추이 -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="icon">📈</span> 일별 노출수 추이
-                </div>
-                <div class="chart-container">
-                    <div class="chart-title">일별 노출수 변동 추이</div>
-                    <canvas id="impressionsChart"></canvas>
-                </div>
-            </div>
-
-            <!-- 차트: 일별 클릭수 추이 -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="icon">📈</span> 일별 클릭수 추이
-                </div>
-                <div class="chart-container">
-                    <div class="chart-title">일별 클릭수 변동 추이</div>
-                    <canvas id="clicksChart"></canvas>
-                </div>
-            </div>
-
-            <!-- 차트: 클릭률 추이 -->
-            <div class="section">
-                <div class="chart-container">
-                    <div class="chart-title">일별 클릭률 변화</div>
-                    <canvas id="ctrChart"></canvas>
-                </div>
-            </div>
-
-            <!-- 상세 데이터 -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="icon">📋</span> 일별 상세 데이터
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>날짜</th>
-                                <th>소진비용</th>
-                                <th>노출수</th>
-                                <th>클릭수</th>
-                                <th>클릭률</th>
-                                <th>클릭당 평균비용</th>
-                            </tr>
-                        </thead>
-                        <tbody id="daily-table-body">
-                            <!-- 동적으로 생성됨 -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            <!-- 푸터 -->
-            <div class="footer-section">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h2 style="color: #667eea; margin-bottom: 15px;">📞 문의 및 지원</h2>
-                    <p style="color: #666; font-size: 1.05em; line-height: 1.8;">
-                        리포트에 대한 질문이나 추가적인 최적화 상담이 필요하신 경우<br>
-                        <strong>언제든지 연락주세요!</strong> 😊
-                    </p>
-                </div>
-
-                <div class="footer-info">
-                    <p style="margin-top: 15px; font-weight: 600; color: #667eea;">
-                        💪 <strong>함께 성장하는 파트너십!</strong><br>
-                        에프케이(주)가 더 나은 성과를 위해 지속적으로 노력해 나가겠습니다.
-                    </p>
-                </div>
+            <div class="footer-info">
+                <p style="margin-top: 15px; font-weight: 600; color: #667eea;">
+                    💪 <strong>함께 성장하는 파트너십!</strong><br>
+                    에프케이(주)가 더 나은 성과를 위해 지속적으로 노력해 나가겠습니다.
+                </p>
             </div>
         </div>
+    </div>
     </div>
     </div>
 
