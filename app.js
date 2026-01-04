@@ -202,7 +202,36 @@ function populateReport() {
 
     // 날짜 범위
     document.getElementById('date-range').textContent = `2025.${dateRange.start} ~ 2025.${dateRange.end}`;
+    document.getElementById('date-range').textContent = `2025.${dateRange.start} ~ 2025.${dateRange.end}`;
     document.getElementById('days-count').textContent = stats.days_count;
+
+    // 예산 및 운영 현황 데이터 (소진 예상일 계산)
+    const avgDailyCost = stats.avg_daily_cost;
+    const daysRemaining = avgDailyCost > 0 ? Math.floor(inputData.currentBalance / avgDailyCost) : 0;
+
+    const today = new Date();
+    const estDate = new Date(today);
+    estDate.setDate(today.getDate() + daysRemaining);
+    const estDateStr = `${estDate.getFullYear()}.${String(estDate.getMonth() + 1).padStart(2, '0')}.${String(estDate.getDate()).padStart(2, '0')}`;
+
+    // 운영 기간 섹션 업데이트
+    const lastChargeDateVal = inputData.lastChargeDate ? inputData.lastChargeDate.replace(/-/g, '.') : '-';
+    // 요소가 존재하는지 확인 후 업데이트 (안전장치)
+    const lastChargeEl = document.getElementById('disp-last-charge-date');
+    if (lastChargeEl) lastChargeEl.textContent = lastChargeDateVal;
+
+    const estDateEl = document.getElementById('disp-estimated-date');
+    if (estDateEl) estDateEl.textContent = `${estDateStr} 예상`;
+
+    // 예산 운영 현황 테이블 업데이트
+    const setContent = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    setContent('disp-weekday-limit', inputData.weekdayLimit.toLocaleString());
+    setContent('disp-weekend-limit', inputData.weekendLimit.toLocaleString());
+    setContent('disp-total-budget', inputData.totalBudget.toLocaleString());
+    setContent('disp-period-cost', Math.round(stats.total_cost).toLocaleString());
+    setContent('disp-current-balance', inputData.currentBalance.toLocaleString());
+    setContent('disp-depletion-date', estDateStr);
 
 
 

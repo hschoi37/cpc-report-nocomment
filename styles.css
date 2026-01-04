@@ -338,3 +338,76 @@ td {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+/* Summary Details Box */
+.summary-details {
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 4px solid var(--primary); /* Accent border on the left */
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.detail-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+}
+
+/* Budget Table */
+.budget-table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+    padding: 0; /* Let table fill container */
+}
+
+.budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.budget-table th {
+    background: rgba(255, 255, 255, 0.05); /* Slightly lighter header */
+    padding: 1.2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.budget-table td {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.budget-table td:last-child {
+    border-bottom: none;
+}
+
+.budget-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.highlight-green {
+    color: #10b981 !important; /* Emerald green for positive balance */
+    font-weight: 700;
+}
