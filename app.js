@@ -102,10 +102,13 @@ async function uploadFile(file) {
             console.log('가맹점 이름:', storeName);
             showUploadStatus(`✅ ${result.filename} 업로드 완료!`, 'success');
 
-            // 바로 리포트 생성
+            // 입력 섹션으로 이동
             setTimeout(() => {
                 uploadSection.classList.add('hidden');
-                generateReport();
+                if (inputSection) inputSection.classList.remove('hidden');
+
+                // 초기 예상일 계산 실행
+                updateEstimatedDate();
             }, 1000);
         } else {
             throw new Error('데이터 처리 실패');
@@ -125,11 +128,18 @@ function showUploadStatus(message, type) {
 
 // ===== 2단계: 입력 대시보드 (사용 안 함) =====
 function initializeInputDashboard() {
-    // 리포트 생성 버튼 (기존 기능 유지 또는 숨김)
+    // 리포트 생성 버튼
     const generateBtn = document.getElementById('generate-report-btn');
     if (generateBtn) {
         generateBtn.addEventListener('click', generateReport);
     }
+
+    // 입력값 변경 시 실시간 재계산
+    const inputs = ['weekday-limit', 'weekend-limit', 'current-balance', 'total-budget', 'last-charge-date'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', updateEstimatedDate);
+    });
 }
 
 function updateEstimatedDate() {

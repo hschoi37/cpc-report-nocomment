@@ -37,6 +37,45 @@
 
 
 
+    <!-- 예산 입력 섹션 -->
+    <div id="input-section" class="section hidden">
+        <div class="container glass input-dashboard">
+            <h1 class="page-title"><span class="icon">📊</span> 예산 및 운영 정보 입력</h1>
+            <p class="subtitle">리포트에 반영될 예산 정보를 입력하세요</p>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="weekday-limit">1일 한도 (평일) <span>CNY</span></label>
+                    <input type="number" id="weekday-limit" value="120">
+                </div>
+                <div class="input-group">
+                    <label for="weekend-limit">1일 한도 (휴일) <span>CNY</span></label>
+                    <input type="number" id="weekend-limit" value="180">
+                </div>
+                <div class="input-group">
+                    <label for="total-budget">총 충전금 <span>CNY</span></label>
+                    <input type="number" id="total-budget" value="3000">
+                </div>
+                <div class="input-group">
+                    <label for="current-balance">현재 잔액 <span>CNY</span></label>
+                    <input type="number" id="current-balance" value="1105">
+                </div>
+                <!-- 날짜 관련 입력은 자동 계산되거나 필요시 추가 -->
+                <div class="input-group">
+                    <label for="last-charge-date">최종 충전일</label>
+                    <input type="date" id="last-charge-date" value="2025-01-04">
+                </div>
+            </div>
+
+            <div class="estimation-box glass">
+                <div class="est-label">소진 예상일</div>
+                <div class="est-value" id="estimated-date">계산 중...</div>
+            </div>
+
+            <button class="btn-primary" id="generate-report-btn">리포트 생성하기</button>
+        </div>
+    </div>
+
     <!-- 리포트 섹션 -->
     <div id="report-section" class="section hidden">
         <div class="report-controls">
