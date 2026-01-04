@@ -25,7 +25,7 @@
 body {
     font-family: var(--font-main);
     background: var(--background);
-    background-image: 
+    background-image:
         radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
         radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0, transparent 50%),
         radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.05) 0, transparent 50%);
@@ -123,7 +123,8 @@ body {
     padding: 0 20px;
 }
 
-.btn-primary, .btn-success {
+.btn-primary,
+.btn-success {
     padding: 14px 28px;
     border: none;
     border-radius: 14px;
@@ -192,7 +193,8 @@ body {
 
 .metric-card {
     padding: 24px;
-    border-radius: 20px;
+    border-radius: 24px;
+    /* Standardized radius */
     background: var(--surface);
     border: 1px solid var(--border);
 }
@@ -210,17 +212,20 @@ body {
 }
 
 .chart-container {
-    padding: 20px;
+    padding: 1.5rem;
+    /* 24px to match Summary */
     height: 400px;
     margin-bottom: 40px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 24px;
+    /* Standardized radius */
 }
 
 .table-wrapper {
     overflow-x: auto;
-    border-radius: 20px;
+    border-radius: 24px;
+    /* Standardized radius */
     background: var(--surface);
     border: 1px solid var(--border);
 }
@@ -249,8 +254,10 @@ td {
 }
 
 .weekly-card {
-    padding: 20px;
-    border-radius: 20px;
+    padding: 1.5rem;
+    /* Standardized padding 24px */
+    border-radius: 24px;
+    /* Standardized radius */
     background: var(--surface);
     border: 1px solid var(--border);
 }
@@ -325,7 +332,8 @@ td {
     font-family: 'Outfit', sans-serif;
     font-size: 2rem;
     font-weight: 700;
-    color: #ffca28; /* Warm yellow/orange for attention */
+    color: #ffca28;
+    /* Warm yellow/orange for attention */
     text-shadow: 0 0 20px rgba(255, 202, 40, 0.3);
 }
 
@@ -348,7 +356,8 @@ td {
     flex-direction: column;
     gap: 0.8rem;
     background: rgba(255, 255, 255, 0.03);
-    border-left: 4px solid var(--primary); /* Accent border on the left */
+    border-left: 4px solid var(--primary);
+    /* Accent border on the left */
 }
 
 .detail-row {
@@ -371,8 +380,10 @@ td {
 /* Budget Table */
 .budget-table-container {
     overflow-x: auto;
-    border-radius: 16px;
-    padding: 0; /* Let table fill container */
+    border-radius: 24px;
+    /* Standardized radius */
+    padding: 0;
+    /* Let table fill container */
 }
 
 .budget-table {
@@ -382,8 +393,10 @@ td {
 }
 
 .budget-table th {
-    background: rgba(255, 255, 255, 0.05); /* Slightly lighter header */
-    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    /* Slightly lighter header */
+    padding: 1.5rem;
+    /* Standardized to match td and other containers */
     text-align: center;
     color: var(--text-secondary);
     font-weight: 600;
@@ -408,6 +421,7 @@ td {
 }
 
 .highlight-green {
-    color: #10b981 !important; /* Emerald green for positive balance */
+    color: #10b981 !important;
+    /* Emerald green for positive balance */
     font-weight: 700;
 }
