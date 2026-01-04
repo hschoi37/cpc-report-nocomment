@@ -102,10 +102,10 @@ async function uploadFile(file) {
             console.log('가맹점 이름:', storeName);
             showUploadStatus(`✅ ${result.filename} 업로드 완료!`, 'success');
 
-            // 입력 대시보드로 이동
+            // 바로 리포트 생성
             setTimeout(() => {
                 uploadSection.classList.add('hidden');
-                inputSection.classList.remove('hidden');
+                generateReport();
             }, 1000);
         } else {
             throw new Error('데이터 처리 실패');
@@ -123,31 +123,28 @@ function showUploadStatus(message, type) {
     uploadStatus.classList.remove('hidden');
 }
 
-// ===== 2단계: 입력 대시보드 =====
+// ===== 2단계: 입력 대시보드 (사용 안 함) =====
 function initializeInputDashboard() {
-    // 오늘 날짜 자동 입력
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('report-date').value = today;
-    document.getElementById('last-charge-date').value = today;
-
-    // 입력 필드 이벤트 리스너
-    const inputs = ['weekday-limit', 'weekend-limit', 'current-balance', 'total-budget', 'last-charge-date'];
-    inputs.forEach(id => {
-        const element = document.getElementById(id);
-        element.addEventListener('input', updateEstimatedDate);
-    });
-
-    // 리포트 생성 버튼
-    document.getElementById('generate-report-btn').addEventListener('click', generateReport);
+    // 리포트 생성 버튼 (기존 기능 유지 또는 숨김)
+    const generateBtn = document.getElementById('generate-report-btn');
+    if (generateBtn) {
+        generateBtn.addEventListener('click', generateReport);
+    }
 }
 
 function updateEstimatedDate() {
-    // 입력값 가져오기
-    inputData.weekdayLimit = parseFloat(document.getElementById('weekday-limit').value) || 0;
-    inputData.weekendLimit = parseFloat(document.getElementById('weekend-limit').value) || 0;
-    inputData.currentBalance = parseFloat(document.getElementById('current-balance').value) || 0;
-    inputData.totalBudget = parseFloat(document.getElementById('total-budget').value) || 0;
-    inputData.lastChargeDate = document.getElementById('last-charge-date').value;
+    // 입력값 가져오기 (엘리먼트가 존재하는 경우에만)
+    const weekdayLimitEl = document.getElementById('weekday-limit');
+    const weekendLimitEl = document.getElementById('weekend-limit');
+    const currentBalanceEl = document.getElementById('current-balance');
+    const totalBudgetEl = document.getElementById('total-budget');
+    const lastChargeDateEl = document.getElementById('last-charge-date');
+
+    if (weekdayLimitEl) inputData.weekdayLimit = parseFloat(weekdayLimitEl.value) || 0;
+    if (weekendLimitEl) inputData.weekendLimit = parseFloat(weekendLimitEl.value) || 0;
+    if (currentBalanceEl) inputData.currentBalance = parseFloat(currentBalanceEl.value) || 0;
+    if (totalBudgetEl) inputData.totalBudget = parseFloat(totalBudgetEl.value) || 0;
+    if (lastChargeDateEl) inputData.lastChargeDate = lastChargeDateEl.value;
 
     if (!reportData) return;
 
@@ -161,7 +158,8 @@ function updateEstimatedDate() {
 
     const formattedDate = `${estimatedDate.getFullYear()}.${String(estimatedDate.getMonth() + 1).padStart(2, '0')}.${String(estimatedDate.getDate()).padStart(2, '0')}`;
 
-    document.getElementById('estimated-date').textContent = formattedDate;
+    const estimatedDateEl = document.getElementById('estimated-date');
+    if (estimatedDateEl) estimatedDateEl.textContent = formattedDate;
 }
 
 // ===== 3단계: 리포트 생성 =====
@@ -175,7 +173,7 @@ function generateReport() {
     updateEstimatedDate();
 
     // 리포트 섹션으로 이동
-    inputSection.classList.add('hidden');
+    if (inputSection) inputSection.classList.add('hidden');
     reportSection.classList.remove('hidden');
 
     // 리포트 데이터 채우기
@@ -196,16 +194,9 @@ function populateReport() {
     document.getElementById('date-range').textContent = `2025.${dateRange.start} ~ 2025.${dateRange.end}`;
     document.getElementById('days-count').textContent = stats.days_count;
 
-    // 최종 충전일 표시
-    if (inputData.lastChargeDate) {
-        const lcd = new Date(inputData.lastChargeDate);
-        const formattedLCD = `${lcd.getFullYear()}.${String(lcd.getMonth() + 1).padStart(2, '0')}.${String(lcd.getDate()).padStart(2, '0')}`;
-        document.getElementById('display-last-charge-date').textContent = formattedLCD;
-    }
 
-    // 소진 예상일
-    const estimatedDateText = document.getElementById('estimated-date').textContent;
-    document.getElementById('next-charge-date').textContent = `${estimatedDateText} 예상`;
+
+
 
     // 핵심 성과 지표
     document.getElementById('total-cost').textContent = `${Math.round(stats.total_cost).toLocaleString()} CNY`;
@@ -216,12 +207,7 @@ function populateReport() {
     document.getElementById('avg-daily-clicks').textContent = stats.avg_daily_clicks;
     document.getElementById('avg-ctr').textContent = `${Number(stats.avg_ctr).toFixed(2)}%`;
 
-    // 예산 운영 현황
-    document.getElementById('budget-limits').textContent = `${inputData.weekdayLimit} / ${inputData.weekendLimit} CNY`;
-    document.getElementById('budget-total').textContent = `${inputData.totalBudget.toLocaleString()} CNY`;
-    document.getElementById('budget-spent').textContent = `${Math.round(stats.total_cost).toLocaleString()} CNY`;
-    document.getElementById('budget-balance').textContent = `${inputData.currentBalance.toLocaleString()} CNY`;
-    document.getElementById('budget-estimated-date').textContent = document.getElementById('estimated-date').textContent;
+
 
     // 주간별 분석
     populateWeeklyData();
@@ -232,6 +218,7 @@ function populateReport() {
 
 function populateWeeklyData() {
     const weeklyGrid = document.getElementById('weekly-grid');
+    if (!weeklyGrid) return;
     weeklyGrid.innerHTML = '';
 
     const weekClasses = ['', 'week2', 'week3', 'week4'];
@@ -309,11 +296,13 @@ function createCharts() {
             datasets: [{
                 label: '노출수',
                 data: impressions,
-                borderColor: '#667eea',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                borderWidth: 2,
+                borderColor: '#818cf8',
+                backgroundColor: 'rgba(129, 140, 248, 0.1)',
+                borderWidth: 3,
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointBackgroundColor: '#818cf8',
+                pointRadius: 4
             }]
         },
         options: {
@@ -322,19 +311,16 @@ function createCharts() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: '노출수',
-                        color: '#667eea',
-                        font: { weight: 'bold' }
-                    }
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
                 }
             },
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
+                legend: { labels: { color: '#f8fafc', font: { family: 'Outfit' } } }
             }
         }
     });
@@ -348,11 +334,13 @@ function createCharts() {
             datasets: [{
                 label: '클릭수',
                 data: clicks,
-                borderColor: '#e74c3c',
-                backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                borderWidth: 2,
+                borderColor: '#a855f7',
+                backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                borderWidth: 3,
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointBackgroundColor: '#a855f7',
+                pointRadius: 4
             }]
         },
         options: {
@@ -361,19 +349,16 @@ function createCharts() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: '클릭수',
-                        color: '#e74c3c',
-                        font: { weight: 'bold' }
-                    }
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
                 }
             },
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
+                legend: { labels: { color: '#f8fafc', font: { family: 'Outfit' } } }
             }
         }
     });
@@ -387,16 +372,16 @@ function createCharts() {
             datasets: [{
                 label: '클릭률 (%)',
                 data: ctrs,
-                borderColor: '#f39c12',
-                backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                borderWidth: 3,
+                borderColor: '#f59e0b',
+                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                borderWidth: 4,
                 fill: true,
                 tension: 0.4,
-                pointBackgroundColor: '#f39c12',
+                pointBackgroundColor: '#f59e0b',
                 pointBorderColor: '#fff',
                 pointBorderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7
+                pointRadius: 6,
+                pointHoverRadius: 8
             }]
         },
         options: {
@@ -405,22 +390,17 @@ function createCharts() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: Math.max(...ctrs) + 1,
-                    title: {
-                        display: true,
-                        text: '클릭률 (%)'
-                    }
+                    max: Math.max(...ctrs) * 1.2,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
                 }
             },
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: { size: 12, weight: 'bold' },
-                        padding: 20
-                    }
-                }
+                legend: { labels: { color: '#f8fafc', font: { family: 'Outfit', size: 14, weight: 'bold' } } }
             }
         }
     });
@@ -444,10 +424,7 @@ function initializeReportControls() {
         uploadSection.classList.remove('hidden');
     });
 
-    document.getElementById('edit-inputs-btn').addEventListener('click', () => {
-        reportSection.classList.add('hidden');
-        inputSection.classList.remove('hidden');
-    });
+
 
     document.getElementById('save-png-btn').addEventListener('click', saveToPNG);
     document.getElementById('save-pdf-btn').addEventListener('click', saveToPDF);
