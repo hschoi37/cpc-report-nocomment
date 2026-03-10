@@ -8,11 +8,8 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# No additional system dependencies needed
+# pandas and openpyxl provide wheels, no compilation required
 
 # Copy requirements and install dependencies
 COPY requirements.txt .

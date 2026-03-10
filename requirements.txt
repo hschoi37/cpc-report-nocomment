@@ -1,5 +1,9 @@
+# CPC 월간 리포트 생성기 (No Comment) - 필수 패키지
+# Updated: 2026-03-10
+
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
 pandas>=2.0.0
-openpyxl==3.1.2
+# openpyxl 버전 3.1.5로 명시적 고정 (Pandas 호환성)
+openpyxl==3.1.5
 python-multipart==0.0.6
